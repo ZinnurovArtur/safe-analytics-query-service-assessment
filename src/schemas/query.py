@@ -6,13 +6,13 @@ class QueryRequest(BaseModel):
         json_schema_extra={
             "example": {
                 "group_by": "department",
-                "filter": {"location": "London"},
+                "filter_query": {"location": "London"},
             }
         }
     )
 
     group_by: str
-    filter: dict[str, str] | None = None
+    filter_query: dict[str, str] | None = None
 
 
 class QueryResult(BaseModel):
