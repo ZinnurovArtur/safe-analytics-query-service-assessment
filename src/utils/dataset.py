@@ -4,19 +4,17 @@ from pathlib import Path
 from schemas.dataset import Dataset
 
 
-"""
-Loads a dataset from a CSV file and returns a Dataset object.
-Also can use Pandas to load the dataset.
-
-Args:
-    path: The path to the CSV file.
-
-Returns:
-    A Dataset object.
-"""
-
-
 def load_dataset(path: Path) -> Dataset:
+    """
+    Loads a dataset from a CSV file and returns a Dataset object.
+    Also can use Pandas to load the dataset.
+
+    Args:
+        path: The path to the CSV file.
+
+    Returns:
+        A Dataset object.
+    """
     with open(path, "r", newline="", encoding="utf-8") as file:
         reader = csv.reader(file)
         all_rows = list(reader)
