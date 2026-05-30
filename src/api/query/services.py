@@ -1,19 +1,22 @@
-from collections import Counter
-
 from schemas.query import QueryRequest, QueryResult
 from utils.dataset import Dataset
 
 
 def run_query(dataset: Dataset, request: QueryRequest, threshold: int) -> QueryResult:
+    # could also use: Counter(row[request.group_by] for row in rows)
     rows = dataset.rows
 
     if request.filter:
-        rows = tuple(
-            row for row in rows
+        rows = [
+            row
+            for row in rows
             if all(row.get(k) == v for k, v in request.filter.items())
-        )
+        ]
 
-    counts = Counter(row[request.group_by] for row in rows)
+    counts: dict[str, int] = {}
+    for row in rows:
+        key = row[request.group_by]
+        counts[key] = counts.get(key, 0) + 1
 
     groups = {
         group: count if count >= threshold else "suppressed"
