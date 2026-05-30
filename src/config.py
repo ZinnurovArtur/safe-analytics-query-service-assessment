@@ -4,9 +4,10 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    CSV_PATH: Path = Path("/Users/arturzinnurov/Documents/safe-analytics-query-service-assessment/data/employees.csv")
+    CSV_PATH: Path
     SUPPRESSION_THRESHOLD: int = 3
-    AUDIT_LOG_PATH: Path = Path("logs/audit.log")
+    AUDIT_LOG_PATH: Path
 
     class Config:
+        env_file = "../.env"
         extra = "ignore"
