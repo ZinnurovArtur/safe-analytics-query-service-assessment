@@ -28,6 +28,11 @@ async def query(
             status_code=400,
             detail=f"Invalid group_by field: {body.group_by}",
         )
+    if body.group_by in settings.RESTRICTED_FIELDS:
+        raise HTTPException(
+            status_code=403,
+            detail=f"Access denied for field: {body.group_by}",
+        )
 
     # Reject filter keys that don't correspond to a real column.
     if body.filter_query:
@@ -36,6 +41,12 @@ async def query(
             raise HTTPException(
                 status_code=400,
                 detail=f"Invalid filter field(s): {', '.join(invalid_keys)}",
+            )
+
+        if any(key in settings.RESTRICTED_FIELDS for key in body.filter_query.keys()):
+            raise HTTPException(
+                status_code=403,
+                detail=f"Access denied for filter key: {body.filter_query}",
             )
 
     query_result = run_query(dataset, body, settings.SUPPRESSION_THRESHOLD)
