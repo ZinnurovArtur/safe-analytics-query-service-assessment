@@ -266,7 +266,7 @@ pip install -r requirements/requirements.txt
 **Configure environment** (copy the example and adjust if needed):
 
 ```bash
-cp src/.env.example src/.env
+cp src/env.example src/.env
 ```
 
 Potentially use the relative file path of files:

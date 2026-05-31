@@ -9,7 +9,7 @@ def test_audit_entry_has_expected_fields():
     """All required fields are present and hold the correct values."""
     entry = AuditEntry(
         group_by="department",
-        filter={"location": "London"},
+        filter_query={"location": "London"},
         suppression_triggered=True,
     )
 
