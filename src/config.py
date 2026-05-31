@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     CSV_PATH: Path = Path("data/employees.csv")
     SUPPRESSION_THRESHOLD: int = 3
+    RESTRICTED_FIELDS: list[str] = ["name", "employee_id"]
     AUDIT_LOG_PATH: Path = Path("logs/audit.log")
 
     model_config = SettingsConfigDict(
