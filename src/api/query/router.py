@@ -1,6 +1,4 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
-from fastapi.responses import JSONResponse
-
 from api.query.services import run_query
 from schemas.audit import AuditEntry
 from schemas.query import QueryRequest
@@ -13,7 +11,7 @@ router = APIRouter(tags=["Query"])
 @router.post("/query")
 async def query(
     request: Request, body: QueryRequest, settings: Settings = Depends(get_settings)
-):
+) -> dict[str, int | str]:
     """
     Run an aggregation query against the loaded dataset.
 
