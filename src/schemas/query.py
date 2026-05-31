@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class QueryRequest(BaseModel):
@@ -6,12 +6,12 @@ class QueryRequest(BaseModel):
         json_schema_extra={
             "example": {
                 "group_by": "department",
-                "filter_query": {"location": "London"},
+                "filter": {"location": "London"},
             }
         }
     )
     group_by: str
-    filter_query: dict[str, str] | None = None
+    filter_query: dict[str, str] | None = Field(default=None, alias="filter")
 
 
 class QueryResult(BaseModel):
