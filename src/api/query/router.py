@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.responses import JSONResponse
 
 from api.query.services import run_query
@@ -14,26 +14,35 @@ router = APIRouter(tags=["Query"])
 async def query(
     request: Request, body: QueryRequest, settings: Settings = Depends(get_settings)
 ):
+    """
+    Run an aggregation query against the loaded dataset.
+
+    Validates the request fields against known dataset columns before delegating
+    to the service layer. Suppression is applied by the service based on the
+    configured threshold. Every request - including those that trigger suppression
+    - is recorded in the audit log.
+    """
     dataset = request.app.state.dataset
 
+    # Reject unknown group_by columns before doing any work.
     if body.group_by not in dataset.columns:
-        return JSONResponse(
+        raise HTTPException(
             status_code=400,
-            content={"error": f"Invalid group_by field: {body.group_by}"},
+            detail=f"Invalid group_by field: {body.group_by}",
         )
 
+    # Reject filter keys that don't correspond to a real column.
     if body.filter_query:
         invalid_keys = [k for k in body.filter_query if k not in dataset.columns]
         if invalid_keys:
-            return JSONResponse(
+            raise HTTPException(
                 status_code=400,
-                content={
-                    "error": f"Invalid filter field(s): {', '.join(invalid_keys)}"
-                },
+                detail=f"Invalid filter field(s): {', '.join(invalid_keys)}",
             )
 
     query_result = run_query(dataset, body, settings.SUPPRESSION_THRESHOLD)
 
+    # Write the audit entry regardless of whether suppression was triggered.
     write_audit(
         settings.AUDIT_LOG_PATH,
         AuditEntry(
