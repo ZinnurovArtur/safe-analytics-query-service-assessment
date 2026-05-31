@@ -350,6 +350,7 @@ pytest
 - Suppression applies to group counts — a group whose count is strictly less than the threshold (`< 3` by default) is returned as `"suppressed"`.
 - The suppression threshold can be overridden by setting the `SUPPRESSION_THRESHOLD` environment variable.
 - Filter values are strings only (v1). Numeric or range-based filters are out of scope.
+- I have added the restriction on the identifiable fields to prevent leak of sensitive information
 - No authentication is required
 
 # Future work
