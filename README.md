@@ -2,7 +2,7 @@
 
 ## Safe Analytics Query Service
 
-You are building a lightweight analytics service that allows users to query aggregate information from datasets in a safe and reproducible way.
+A lightweight analytics service that allows users to query aggregate information from datasets in a safe and reproducible way.
 
 The service should:
 
@@ -18,7 +18,7 @@ The service should:
 
 The goal of this exercise is to assess practical software engineering, API design, testing, validation logic, and problem solving skills.
 
-We are more interested in your engineering decisions, code quality, reasoning, and approach than production ready completeness. We don't expect a production grade implementation.  A clean and well reasoned solution is preferred over excessive features.
+Tis is more an simple and understandable task for testing the API requests. Some assumptions has been made
 
 ---
 
@@ -243,29 +243,6 @@ The request attempts to group by a column that does not exist in the dataset.
 
 The service should validate incoming requests and return a clear validation error instead of failing unexpectedly.
 
----
-
-# Submission Instructions
-
-Please fork this repository and implement your solution in your own fork.
-
-Once completed, please share the GitHub repository link as your submission.
-
-Please include:
-
-- source code
-- README updates if required
-- Dockerfile
-- tests
-- run instructions
-
----
-
-# Notes
-
-You are free to make reasonable assumptions where requirements are ambiguous.
-
-Please document any assumptions clearly in the README.
 
 ---
 
