@@ -6,11 +6,11 @@ You are building a lightweight analytics service that allows users to query aggr
 
 The service should:
 
-* Load structured data from CSV
-* Expose a simple API
-* Return aggregate statistics
-* Apply configurable safety rules
-* Generate audit logs
+- Load structured data from CSV
+- Expose a simple API
+- Return aggregate statistics
+- Apply configurable safety rules
+- Generate audit logs
 
 ---
 
@@ -93,9 +93,9 @@ Example:
 
 Each query should generate an audit log entry containing:
 
-* timestamp
-* query details
-* whether suppression was triggered
+- timestamp
+- query details
+- whether suppression was triggered
 
 Example:
 
@@ -116,8 +116,8 @@ Example:
 
 Please provide:
 
-* Dockerfile
-* simple run instructions
+- Dockerfile
+- simple run instructions
 
 ---
 
@@ -127,10 +127,10 @@ Please include a few tests where appropriate.
 
 Examples:
 
-* validation logic
-* suppression behaviour
-* API responses
-* filtering behaviour
+- validation logic
+- suppression behaviour
+- API responses
+- filtering behaviour
 
 ---
 
@@ -253,11 +253,11 @@ Once completed, please share the GitHub repository link as your submission.
 
 Please include:
 
-* source code
-* README updates if required
-* Dockerfile
-* tests
-* run instructions
+- source code
+- README updates if required
+- Dockerfile
+- tests
+- run instructions
 
 ---
 
@@ -266,3 +266,97 @@ Please include:
 You are free to make reasonable assumptions where requirements are ambiguous.
 
 Please document any assumptions clearly in the README.
+
+---
+
+# Running the Application
+
+## Prerequisites
+
+- Python 3.12+
+- Docker (for containerised run)
+
+---
+
+## Option 1: Local
+
+**Install dependencies:**
+
+```bash
+pip install -r requirements/requirements.txt
+```
+
+**Configure environment** (copy the example and adjust if needed):
+
+```bash
+cp src/.env.example src/.env
+```
+
+Potentially use the relative file path of files:
+
+For example:
+
+```bash
+CSV_PATH=../data/employees.csv
+```
+
+**Start the server:**
+
+```bash
+cd src
+uvicorn main:app --host 0.0.0.0 --port 8080
+```
+
+---
+
+## Option 2: Docker
+
+**Build the image** (run from the repo root):
+
+```bash
+docker build -f docker/Dockerfile -t safe-analytics-query-service .
+```
+
+**Run the container:**
+
+```bash
+docker run --env-file src/.env -p 8080:8080 safe-analytics-query-service
+```
+
+Override any variable inline if needed:
+
+Use the `.env.example` to have an `.env` file for docker run
+
+```bash
+docker run --env-file src/.env -e SUPPRESSION_THRESHOLD=5 -p 8080:8080 safe-analytics-query-service
+```
+
+The API is available at `http://localhost:8080`. Interactive docs at `http://localhost:8080/docs`.
+
+---
+
+## Running Tests
+
+```bash
+pip install -r requirements/test.txt
+pytest
+```
+
+---
+
+# Assumptions
+
+- Assuming we will use the data in the csv. In the future the case-sensitivity needs to be implemented. 
+- Suppression applies to group counts — a group whose count is strictly less than the threshold (`< 3` by default) is returned as `"suppressed"`.
+- The suppression threshold can be overridden by setting the `SUPPRESSION_THRESHOLD` environment variable.
+- Filter values are strings only (v1). Numeric or range-based filters are out of scope.
+- No authentication is required
+
+# Future work
+
+- Implementing the /audit query to see the audits
+- Add the database for performing extensive analysis for the audits
+- Adding the CI/CD pipeline for tests
+- Understand if we need to have an proper UX response if no data
+- Using numpy/pandas for the extensive calculations
+
