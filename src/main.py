@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from api import main_router
-from config import settings
+from config import get_settings
 from utils.dataset import load_dataset
 
 
@@ -20,6 +20,7 @@ Returns:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    settings = get_settings()
     app.state.dataset = load_dataset(settings.CSV_PATH)
     yield
 
