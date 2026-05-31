@@ -10,7 +10,6 @@ class QueryRequest(BaseModel):
             }
         }
     )
-
     group_by: str
     filter_query: dict[str, str] | None = None
 
