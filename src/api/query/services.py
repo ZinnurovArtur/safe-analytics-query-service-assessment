@@ -3,6 +3,17 @@ from utils.dataset import Dataset
 
 
 def run_query(dataset: Dataset, request: QueryRequest, threshold: int) -> QueryResult:
+    """
+    Runs a query against the dataset and returns the result.
+
+    Args:
+        dataset: The dataset to run the query against.
+        request: The query request.
+        threshold: The suppression threshold.
+
+    Returns:
+        A QueryResult object containing the groups and whether suppression was triggered.
+    """
     rows = dataset.rows
 
     # Apply exact-match filters before aggregation.
